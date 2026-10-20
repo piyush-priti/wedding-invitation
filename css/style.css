@@ -1,1 +1,79 @@
+/* Extracted from original code.html; original rules preserved. */
+  :root {
+    --bg-base: #0e0c0a;
+    --card-bg: #181513;
+    --card-surface: #221e1a;
+    --card-highlight: #2c2722;
+    --accent-gold: #d4af37;
+    --accent-subtle: #8a7329;
+    --accent-glow: rgba(212, 175, 55, 0.22);
+    --text-primary: #f5ecd5;
+    --text-secondary: #c9bea7;
+    --text-muted: #8c826f;
+    --border-color: rgba(212, 175, 55, 0.28);
+    --border-radius-card: 16px;
+    --font-script: 'Alex Brush', cursive;
+    --font-display: 'Playfair Display', serif;
+    --font-body: 'Plus Jakarta Sans', sans-serif;
+  }
 
+  /* Style A: Classic Style */
+  [data-visual-style="classic-royal"] {
+    --card-border-width: 1.5px;
+    --card-radius: 14px;
+    --ornament-display: block;
+    --editorial-display: none;
+    --floral-display: none;
+    --headline-font: 'Playfair Display', serif;
+  }
+  /* Style B: Modern Editorial */
+  [data-visual-style="modern-editorial"] {
+    --card-border-width: 1px;
+    --card-radius: 4px;
+    --ornament-display: none;
+    --editorial-display: block;
+    --floral-display: none;
+    --headline-font: 'Cormorant Garamond', serif;
+    --card-bg: #141211;
+  }
+  /* Style C: Romantic Floral */
+  [data-visual-style="romantic-floral"] {
+    --card-border-width: 1px;
+    --card-radius: 28px;
+    --ornament-display: none;
+    --editorial-display: none;
+    --floral-display: block;
+    --headline-font: 'Playfair Display', serif;
+  }
+
+  /* Base dynamic theming binds */
+  body, html {
+    background-color: var(--bg-base);
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    transition: background-color 0.4s ease, color 0.4s ease;
+  }
+
+  .theme-bg-base { background-color: var(--bg-base); }
+  .theme-card-bg { background-color: var(--card-bg); }
+  .theme-surface { background-color: var(--card-surface); }
+  .theme-highlight { background-color: var(--card-highlight); }
+  .theme-border { border-color: var(--border-color); }
+  .theme-gold-text { color: var(--accent-gold); }
+  .theme-text-primary { color: var(--text-primary); }
+  .theme-text-secondary { color: var(--text-secondary); }
+  .theme-text-muted { color: var(--text-muted); }
+  .theme-gold-btn {
+    background: linear-gradient(135deg, var(--accent-gold), var(--accent-subtle));
+    color: #1a1405;
+  }
+
+  ::-webkit-scrollbar { display: none; }
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+  .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+
+/* Keep the invitation cover locked to the viewport until it is opened. */
+html:has(#invitation-cover:not(.opacity-0)) { overflow: hidden; }
+body.overflow-hidden { overflow: hidden !important; height: 100vh; height: 100dvh; }
+#invitation-cover { overscroll-behavior: none; touch-action: pan-x; }
