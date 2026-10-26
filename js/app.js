@@ -1,585 +1,790 @@
-<!DOCTYPE html>
+// Wedding invitation controller extracted from the original file.
+    (function() {
+      // 1. THEME DEFINITIONS (11 PALETTES)
+      const THEMES = [
+        {
+          id: "royal-black",
+          name: "Black & Antique Gold",
+          mood: "Imperial obsidian luxury with raw 24k bullion gold accents",
+          isDark: true,
+          swatchPrimary: "#0e0c0a",
+          swatchSecondary: "#d4af37",
+          vars: {
+            "--bg-base": "#0e0c0a",
+            "--card-bg": "#181513",
+            "--card-surface": "#231f1c",
+            "--card-highlight": "#2e2924",
+            "--accent-gold": "#d4af37",
+            "--accent-subtle": "#917625",
+            "--text-primary": "#f5ecd5",
+            "--text-secondary": "#cfc3aa",
+            "--text-muted": "#8d826c",
+            "--border-color": "rgba(212, 175, 55, 0.3)"
+          }
+        },
+        {
+          id: "ivory-champagne",
+          name: "Ivory & Champagne Gold",
+          mood: "Soft imperial cream silk with light champagne gilding",
+          isDark: false,
+          swatchPrimary: "#fcf9f2",
+          swatchSecondary: "#c5a059",
+          vars: {
+            "--bg-base": "#fcf9f2",
+            "--card-bg": "#ffffff",
+            "--card-surface": "#f5f0e6",
+            "--card-highlight": "#eae1d2",
+            "--accent-gold": "#b0883d",
+            "--accent-subtle": "#806024",
+            "--text-primary": "#2b2520",
+            "--text-secondary": "#574d44",
+            "--text-muted": "#8a7e72",
+            "--border-color": "rgba(197, 160, 89, 0.35)"
+          }
+        },
+        {
+          id: "maroon-gold",
+          name: "Traditional Maroon & Gold",
+          mood: "Traditional Rajputana vermilion with sacred Kundan gold",
+          isDark: true,
+          swatchPrimary: "#30080f",
+          swatchSecondary: "#e6b85c",
+          vars: {
+            "--bg-base": "#24040a",
+            "--card-bg": "#360a12",
+            "--card-surface": "#480e1a",
+            "--card-highlight": "#571321",
+            "--accent-gold": "#e6b85c",
+            "--accent-subtle": "#b38934",
+            "--text-primary": "#fdf4e3",
+            "--text-secondary": "#e3cfb3",
+            "--text-muted": "#a88e72",
+            "--border-color": "rgba(230, 184, 92, 0.35)"
+          }
+        },
+        {
+          id: "emerald-gold",
+          name: "Emerald Green & Gold",
+          mood: "Heritage Panna gemstone velvet with warm temple gold",
+          isDark: true,
+          swatchPrimary: "#08231a",
+          swatchSecondary: "#d4af37",
+          vars: {
+            "--bg-base": "#061b14",
+            "--card-bg": "#0c2e22",
+            "--card-surface": "#123d2f",
+            "--card-highlight": "#194d3c",
+            "--accent-gold": "#e0be53",
+            "--accent-subtle": "#a3842c",
+            "--text-primary": "#eaf5ef",
+            "--text-secondary": "#bed8c9",
+            "--text-muted": "#7a9e8a",
+            "--border-color": "rgba(212, 175, 55, 0.35)"
+          }
+        },
+        {
+          id: "blush-rose",
+          name: "Blush Pink & Rose Gold",
+          mood: "Romantic palace terrace dusk with shimmering rose gold foil",
+          isDark: false,
+          swatchPrimary: "#fff2f4",
+          swatchSecondary: "#c97573",
+          vars: {
+            "--bg-base": "#fff1f3",
+            "--card-bg": "#ffffff",
+            "--card-surface": "#ffe4e8",
+            "--card-highlight": "#ffd6dc",
+            "--accent-gold": "#c25e68",
+            "--accent-subtle": "#943f49",
+            "--text-primary": "#381c22",
+            "--text-secondary": "#633c44",
+            "--text-muted": "#996b74",
+            "--border-color": "rgba(201, 117, 115, 0.35)"
+          }
+        },
+        {
+          id: "royal-blue-silver",
+          name: "Blue & Silver",
+          mood: "Nocturnal Udaipur lake navy with pure sterling foil sheen",
+          isDark: true,
+          swatchPrimary: "#09152b",
+          swatchSecondary: "#cbd5e1",
+          vars: {
+            "--bg-base": "#060f21",
+            "--card-bg": "#0c1d3b",
+            "--card-surface": "#13284f",
+            "--card-highlight": "#193466",
+            "--accent-gold": "#cbd5e1",
+            "--accent-subtle": "#94a3b8",
+            "--text-primary": "#f8fafc",
+            "--text-secondary": "#cbd5e1",
+            "--text-muted": "#64748b",
+            "--border-color": "rgba(203, 213, 225, 0.35)"
+          }
+        },
+        {
+          id: "pastel-floral",
+          name: "Pastel Floral Garden",
+          mood: "Delicate Kashmiri jasmine petals with warm morning gold",
+          isDark: false,
+          swatchPrimary: "#fcfaf7",
+          swatchSecondary: "#b8860b",
+          vars: {
+            "--bg-base": "#fcfaf7",
+            "--card-bg": "#ffffff",
+            "--card-surface": "#f5f0e9",
+            "--card-highlight": "#eae2d5",
+            "--accent-gold": "#b8860b",
+            "--accent-subtle": "#7d5b06",
+            "--text-primary": "#332c28",
+            "--text-secondary": "#5e524b",
+            "--text-muted": "#8f827a",
+            "--border-color": "rgba(184, 134, 11, 0.3)"
+          }
+        },
+        {
+          id: "indian-red-gold",
+          name: "Traditional Indian Red & Gold",
+          mood: "Sacred Sindoori vermilion & holy bridal Alta with Kundan accents",
+          isDark: true,
+          swatchPrimary: "#400609",
+          swatchSecondary: "#e5b94f",
+          vars: {
+            "--bg-base": "#2b0306",
+            "--card-bg": "#45090d",
+            "--card-surface": "#5e0f14",
+            "--card-highlight": "#73151b",
+            "--accent-gold": "#e5b94f",
+            "--accent-subtle": "#b0882e",
+            "--text-primary": "#fff5ea",
+            "--text-secondary": "#edd4b4",
+            "--text-muted": "#b8946e",
+            "--border-color": "rgba(229, 185, 79, 0.35)"
+          }
+        },
+        {
+          id: "modern-minimal-white",
+          name: "Modern Minimal White",
+          mood: "Architectural gallery white with micro-gold hairline precision",
+          isDark: false,
+          swatchPrimary: "#fafafa",
+          swatchSecondary: "#a38237",
+          vars: {
+            "--bg-base": "#f7f7f8",
+            "--card-bg": "#ffffff",
+            "--card-surface": "#eeeeef",
+            "--card-highlight": "#e2e2e5",
+            "--accent-gold": "#96752c",
+            "--accent-subtle": "#634d1c",
+            "--text-primary": "#171717",
+            "--text-secondary": "#404040",
+            "--text-muted": "#737373",
+            "--border-color": "rgba(150, 117, 44, 0.25)"
+          }
+        },
+        {
+          id: "royal-purple",
+          name: "Purple & Gold",
+          mood: "Majestic imperial Jamun velvet with opulent polished gold",
+          isDark: true,
+          swatchPrimary: "#1f0e2b",
+          swatchSecondary: "#d4af37",
+          vars: {
+            "--bg-base": "#170921",
+            "--card-bg": "#281238",
+            "--card-surface": "#37194d",
+            "--card-highlight": "#482163",
+            "--accent-gold": "#e0be53",
+            "--accent-subtle": "#9e812b",
+            "--text-primary": "#f8f0fc",
+            "--text-secondary": "#dabfe6",
+            "--text-muted": "#9679a6",
+            "--border-color": "rgba(212, 175, 55, 0.35)"
+          }
+        },
+        {
+          id: "sage-green-ivory",
+          name: "Sage Green & Warm Ivory",
+          mood: "Mehendi botanical sage with antique brass luster",
+          isDark: true,
+          swatchPrimary: "#13211c",
+          swatchSecondary: "#d1b26f",
+          vars: {
+            "--bg-base": "#0e1a16",
+            "--card-bg": "#192c25",
+            "--card-surface": "#223b32",
+            "--card-highlight": "#2d4c41",
+            "--accent-gold": "#d1b26f",
+            "--accent-subtle": "#9c8044",
+            "--text-primary": "#f3eedd",
+            "--text-secondary": "#c8c1ad",
+            "--text-muted": "#827c6b",
+            "--border-color": "rgba(209, 178, 111, 0.32)"
+          }
+        }
+      ];
 
-<html class="dark" lang="en"><head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/>
-<meta content="mobile_blank" name="shell-type"/>
-<title>Piyush &amp; Priti — Wedding Invitation &amp; Theme Studio</title>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com" rel="preconnect"/>
-<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&amp;family=Playfair+Display:ital,wght@0,400..900;1,400..900&amp;family=Plus+Jakarta+Sans:wght@300;400;500;600;700&amp;family=Alex+Brush&amp;display=swap" rel="stylesheet"/>
-<!-- <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script> -->
-<script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "surface": "#151312", "on-error-container": "#ffdad6", "tertiary-container": "#d2ae69", "on-secondary-container": "#bcb4a4", "on-tertiary-fixed-variant": "#5c4305", "error-container": "#93000a", "background": "#151312", "on-surface": "#e8e1df", "outline": "#99907c", "on-secondary-fixed-variant": "#4b4639", "primary": "#f2ca50", "primary-fixed-dim": "#e9c349", "on-primary-container": "#554300", "surface-container-lowest": "#100e0d", "surface-container-high": "#2c2928", "secondary-fixed": "#eae2d0", "surface-dim": "#151312", "surface-tint": "#e9c349", "primary-container": "#d4af37", "on-tertiary-container": "#5a4103", "primary-fixed": "#ffe088", "surface-variant": "#373433", "on-error": "#690005", "error": "#ffb4ab", "on-background": "#e8e1df", "inverse-primary": "#735c00", "on-surface-variant": "#d0c5af", "on-primary-fixed": "#241a00", "on-primary": "#3c2f00", "inverse-surface": "#e8e1df", "on-secondary-fixed": "#1f1b10", "on-secondary": "#343024", "surface-container": "#221f1e", "secondary-container": "#4b4639", "secondary-fixed-dim": "#cec6b5", "on-tertiary-fixed": "#261900", "on-tertiary": "#402d00", "secondary": "#cec6b5", "surface-container-low": "#1d1b1a", "surface-container-highest": "#373433", "outline-variant": "#4d4635", "tertiary-fixed-dim": "#e7c27a", "surface-bright": "#3c3837", "tertiary-fixed": "#ffdea2", "inverse-on-surface": "#33302e", "tertiary": "#efc981", "on-primary-fixed-variant": "#574500" }, "borderRadius": { "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem" }, "spacing": { "space-lg": "2.25rem", "margin-mobile": "1.25rem", "space-md": "1.25rem", "space-sm": "0.75rem", "gutter": "1.5rem", "space-xl": "3.75rem", "space-xs": "0.375rem", "margin": "2.5rem", "gutter-sm": "1rem" }, "fontFamily": { "display-hero-mobile": ["Playfair Display"], "label-caps": ["Playfair Display"], "title-regal": ["Playfair Display"], "headline-sm": ["Playfair Display"], "body-md": ["Plus Jakarta Sans"], "headline-md": ["Playfair Display"], "body-lg": ["Plus Jakarta Sans"], "headline-lg-mobile": ["Playfair Display"], "headline-lg": ["Playfair Display"], "display-hero": ["Playfair Display"], "script-accent": ["Playfair Display"], "body-sm": ["Plus Jakarta Sans"] }, "fontSize": { "display-hero-mobile": ["38px", {"lineHeight": "48px", "letterSpacing": "0.02em", "fontWeight": "400"}], "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.22em", "fontWeight": "600"}], "title-regal": ["16px", {"lineHeight": "24px", "letterSpacing": "0.15em", "fontWeight": "600"}], "headline-sm": ["20px", {"lineHeight": "28px", "letterSpacing": "0.01em", "fontWeight": "500"}], "body-md": ["15px", {"lineHeight": "26px", "letterSpacing": "0.01em", "fontWeight": "400"}], "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "0.02em", "fontWeight": "500"}], "body-lg": ["18px", {"lineHeight": "30px", "letterSpacing": "0.01em", "fontWeight": "300"}], "headline-lg-mobile": ["28px", {"lineHeight": "36px", "letterSpacing": "0.02em", "fontWeight": "400"}], "headline-lg": ["36px", {"lineHeight": "46px", "letterSpacing": "0.03em", "fontWeight": "400"}], "display-hero": ["56px", {"lineHeight": "68px", "letterSpacing": "0.04em", "fontWeight": "400"}], "script-accent": ["22px", {"lineHeight": "32px", "letterSpacing": "0.05em", "fontWeight": "400"}], "body-sm": ["13px", {"lineHeight": "20px", "letterSpacing": "0.02em", "fontWeight": "400"}] } } } }</script>
-<link rel="stylesheet" href="css/style.css">
-</head>
-<body class="antialiased min-h-screen overflow-hidden selection:bg-yellow-500/30 selection:text-yellow-200" data-theme-id="royal-black" data-visual-style="classic-royal">
+      // Active state
+      let activeThemeId = "royal-black";
+      let activeStyleId = "classic-royal";
 
-<aside class="fixed bottom-6 right-4 z-40" style="z-index: 51">
-<button class="flex items-center gap-2 px-4 py-2.5 rounded-full shadow-2xl border theme-border font-medium text-xs theme-gold-btn active:scale-95 transition-all" id="floating-customizer-btn">
-<span class="material-symbols-outlined text-base animate-spin" style="animation-duration: 8s;">auto_fix_high</span>
-<!-- <span class="font-bold tracking-wider uppercase text-[11px]">Theme Studio</span -->
-</button>
-</aside>
+      // Elements
+      const body = document.body;
+      const themeLabel = document.getElementById("active-theme-label");
+      const themeSwatch = document.getElementById("active-theme-swatch");
+      const paletteContainer = document.getElementById("palette-selection-container");
+      const styleButtons = document.querySelectorAll(".style-choice-btn");
 
-<div id="section-cover">
-<!-- ======================================================== -->
-<!-- 1. FULLSCREEN LOCKED ENVELOPE COVER (OVERLAY)            -->
-<!-- ======================================================== -->
-<section class="fixed inset-0 z-50 h-[100dvh] flex flex-col justify-between items-center theme-bg-base p-5 overflow-hidden transition-all duration-1000 ease-out" id="invitation-cover">
-<!-- Shimmer particle ambiance -->
-<div class="absolute inset-0 pointer-events-none opacity-30 overflow-hidden">
-<div class="absolute w-80 h-80 rounded-full blur-3xl -top-12 -left-12 bg-yellow-500/10"></div>
-<div class="absolute w-80 h-80 rounded-full blur-3xl -bottom-12 -right-12 bg-amber-600/10"></div>
-<div class="absolute w-96 h-96 rounded-full blur-3xl top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-yellow-400/5"></div>
-</div>
-<!-- Top floating bar -->
-<div class="relative z-10 w-full max-w-sm flex items-center justify-between pt-2">
-<!-- Music toggle -->
-<button class="flex items-center gap-2 px-3 py-1.5 rounded-full theme-surface border theme-border theme-gold-text text-xs shadow-sm" id="cover-audio-btn">
-<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">music_note</span>
-<div class="flex items-end gap-0.5 h-3 w-3">
-<span class="w-0.5 bg-current rounded-full h-2 animate-pulse"></span>
-<span class="w-0.5 bg-current rounded-full h-3 animate-pulse" style="animation-delay: 150ms;"></span>
-<span class="w-0.5 bg-current rounded-full h-1.5 animate-pulse" style="animation-delay: 300ms;"></span>
-</div>
-<span class="tracking-widest uppercase text-[10px] font-bold">Shehnai</span>
-</button>
-<!-- Language Switch -->
-<div class="flex items-center rounded-full p-0.5 theme-surface border theme-border">
-<button class="px-2.5 py-1 rounded-full text-[11px] font-semibold tracking-wider text-black bg-amber-400 shadow-sm transition-all" id="lang-en-cover">EN</button>
-<button class="px-2.5 py-1 rounded-full text-[11px] font-semibold text-gray-400 hover:text-white transition-all" id="lang-hi-cover">हिन्दी</button>
-</div>
-</div>
-<!-- Central Regal Arch Frame -->
-<div class="relative z-10 w-full max-w-sm my-auto py-4 px-3 flex flex-col items-center text-center">
-<!-- Mughal Ornamental Arch Top Filigree -->
-<div class="w-48 mb-2 theme-gold-text opacity-90 flex justify-center">
-<svg class="w-full h-9" fill="none" viewbox="0 0 200 40" xmlns="http://www.w3.org/2000/svg">
-<path d="M100 0C80 18 50 20 0 22C40 24 60 26 80 34C90 38 96 40 100 40C104 40 110 38 120 34C140 26 160 24 200 22C150 20 120 18 100 0Z" fill="currentColor" fill-opacity="0.8"></path>
-<circle cx="100" cy="18" fill="currentColor" r="3.5"></circle>
-<circle cx="70" cy="22" fill="currentColor" r="2"></circle>
-<circle cx="130" cy="22" fill="currentColor" r="2"></circle>
-</svg>
-</div>
-<p class="text-sm font-semibold tracking-widest uppercase theme-gold-text mb-4" id="cover-ganesh-mantra">
-        ॥ श्री गणेशाय नमः ॥
-      </p>
-<!-- Decorative Wax Seal -->
-<div class="relative w-36 h-36 mx-auto mb-4 rounded-full flex items-center justify-center p-2.5 shadow-2xl border theme-border theme-card-bg">
-<div class="w-full h-full rounded-full overflow-hidden flex items-center justify-center p-1.5 bg-black/40">
-<img alt="Piyush &amp; Priti Monogram Crest" class="w-full h-full object-contain filter drop-shadow-md" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAV3jauCZnZKGsmAxtLa4RdHM2um27ELcEzbCRduFTcbA8sQvGfoA8jHMMWX6AwJq4uIaqjVd3M4r02TaqxFU9jgQ7wGJXsXA3omoM8fnRjuLLiu1CVdzajpYOyGXsWKy7ZY8s61pAFvvePUF6E-_2ivCNBL3XjyYyhDLHELXQRa8DJ5auePZh2X5bM8fEn7mDdond-A9gwEyxdziJEFZpFSJ1w2jL7vsyD4u-w_dze0s6LVpRERKhQ"/>
-</div>
-<span class="absolute -top-1 theme-gold-text text-xs">✦</span>
-<span class="absolute -bottom-1 theme-gold-text text-xs">✦</span>
-</div>
-<span class="text-xs uppercase tracking-[0.25em] theme-text-muted mb-2 font-semibold" id="cover-eyebrow">
-        Wedding Invitation
-      </span>
-<h1 class="text-4xl font-serif leading-tight mb-2 theme-gold-text" style="font-family: var(--headline-font, 'Playfair Display');">
-        Piyush <span class="italic font-normal opacity-80" style="font-family: var(--font-script); font-size: 2.25rem;">&amp;</span> Priti
-      </h1>
-<div class="flex items-center gap-2 mb-2">
-<span class="theme-gold-text text-xs">◆</span>
-<p class="text-xs font-semibold uppercase tracking-widest theme-text-primary">25 November 2026</p>
-<span class="theme-gold-text text-xs">◆</span>
-</div>
-<p class="text-xs uppercase tracking-wider theme-text-secondary mb-6" id="cover-venue">
-        Deoria, Uttar Pradesh, India
-      </p>
-<!-- Open Invitation CTA -->
-<button class="group relative px-8 py-3.5 rounded-full theme-gold-btn shadow-2xl active:scale-95 transition-all flex items-center gap-3" id="open-invitation-btn">
-<span class="w-2 h-2 rounded-full bg-black/60 animate-ping"></span>
-<span class="text-xs uppercase tracking-[0.2em] font-bold text-black" id="cover-btn-text">Open Invitation</span>
-<span class="material-symbols-outlined text-black text-sm group-hover:translate-x-1 transition-transform">mail_lock</span>
-</button>
-<span class="text-[11px] theme-text-muted mt-3 tracking-wider uppercase">
-        Open your invitation
-      </span>
-</div>
-<!-- Arch Motif Watermark -->
-<div class="relative z-10 w-full flex justify-center pb-2">
-<span class="text-[10px] tracking-widest uppercase theme-text-muted">✦ A Celebration of Timeless Union ✦</span>
-</div>
-</section>
-</div>
-<main class="w-full flex flex-col items-center max-w-lg mx-auto pb-24" id="inner-invitation">
-<div data-section="inner-nav">
-<!-- Secondary Nav & Audio strip inside invitation -->
-<div class="w-full px-4 py-3 flex items-center justify-between border-b theme-border theme-card-bg/60">
-<div class="flex items-center gap-2">
-<span class="text-sm font-serif font-bold theme-gold-text">P &amp; P</span>
-<span class="text-xs theme-text-muted">|</span>
-<span class="text-[11px] theme-text-secondary tracking-widest uppercase">Nov 2026</span>
-</div>
-<div class="flex items-center gap-2">
-<button class="p-1.5 rounded-full theme-surface border theme-border theme-gold-text hover:opacity-80 transition-opacity" id="inner-audio-toggle">
-<span class="material-symbols-outlined text-sm leading-none" style="font-variation-settings: 'FILL' 1;">volume_up</span>
-</button>
-<button class="px-2.5 py-1 rounded-full theme-surface border theme-border theme-gold-text text-xs font-semibold" id="lang-switch-inner">
-          हिन्दी
-        </button>
-</div>
-</div>
-</div>
-<div data-section="ganesha">
-<!-- Sacred Ganesha Invocation -->
-<section class="w-full px-5 pt-8 pb-6 flex flex-col items-center text-center">
-<div class="flex items-center justify-center gap-3 mb-2 theme-gold-text">
-<span class="text-xs">✦</span>
-<span class="text-lg font-bold">卐</span>
-<span class="text-xs">✦</span>
-</div>
-<h2 class="text-2xl font-serif font-medium theme-gold-text mb-2 tracking-wide" id="inner-mantra-title" style="font-family: var(--headline-font, 'Playfair Display');">
-        ॥ श्री गणेशाय नमः ॥
-      </h2>
-<p class="text-sm italic theme-text-secondary mb-4 leading-relaxed max-w-sm" id="inner-ganesha-sloka">
-        “वक्रतुण्ड महाकाय सूर्यकोटि समप्रभ।<br/>
-        निर्विघ्नं कुरु मे देव सर्वकार्येषु सर्वदा॥”
-      </p>
-<div class="w-20 h-0.5 bg-gradient-to-r from-transparent via-amber-400/60 to-transparent mb-5"></div>
-<!-- Formal Family Grace Box -->
-<div class="w-full p-5 rounded-2xl theme-surface border theme-border shadow-lg text-center">
-<span class="text-[10px] tracking-[0.2em] uppercase font-bold theme-gold-text mb-2 block">
-          With Love, Blessings &amp; Good Wishes
-        </span>
-<p class="text-xs sm:text-sm theme-text-primary leading-relaxed" id="inner-invitation-message">
-          The families cordially solicit your august presence and heartfelt blessings on the auspicious union and matrimonial solemnization of their beloved children.
-        </p>
-</div>
-</section>
-</div>
-<div data-section="couple">
-<!-- Couple Editorial Frame -->
-<section class="w-full px-5 py-4 flex flex-col items-center text-center">
-<div class="relative w-full rounded-2xl overflow-hidden p-2.5 border theme-border theme-card-bg shadow-2xl">
-<div class="relative w-full aspect-[4/5] rounded-xl overflow-hidden">
-<img alt="Piyush &amp; Priti Wedding Portrait" class="w-full h-full object-cover object-center" src="Main.jpeg"/>
-<div class="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-transparent"></div>
-<div class="absolute bottom-4 inset-x-4 flex flex-col items-center">
-<span class="text-[10px] uppercase tracking-[0.25em] font-semibold theme-gold-text mb-1">Together Forever</span>
-<h3 class="text-2xl font-serif text-white font-medium" style="font-family: var(--headline-font, 'Playfair Display');">Piyush &amp; Priti</h3>
-</div>
-</div>
-</div>
-<!-- Romantic Quote -->
-<div class="mt-5 px-3">
-<p class="text-sm italic theme-text-secondary leading-relaxed" id="inner-quote" style="font-family: var(--headline-font, 'Playfair Display');">
-          “Two souls, one sacred journey woven in the timeless tapestry of devotion, laughter, and eternal love.”
-        </p>
-</div>
-</section>
-</div>
-<div data-section="countdown">
-<!-- Live Wedding Countdown Section -->
-<section class="w-full px-5 py-6">
-<div class="w-full rounded-2xl p-5 border theme-border theme-card-bg shadow-xl text-center">
-<div class="flex items-center justify-center gap-1.5 mb-1 theme-gold-text">
-<span class="material-symbols-outlined text-sm">schedule</span>
-<span class="text-[10px] uppercase font-bold tracking-widest" id="countdown-label">Auspicious Mahurat Countdown</span>
-</div>
-<p class="text-sm font-semibold theme-text-primary mb-5">Wednesday, 25 November 2026</p>
-<!-- 4-Box Countdown Grid -->
-<div class="grid grid-cols-4 gap-2 w-full">
-<div class="p-3 rounded-xl theme-surface border theme-border flex flex-col items-center">
-<span class="text-xl font-bold font-serif theme-gold-text" id="timer-days">--</span>
-<span class="text-[9px] uppercase tracking-wider theme-text-muted mt-0.5" id="label-days">Days</span>
-</div>
-<div class="p-3 rounded-xl theme-surface border theme-border flex flex-col items-center">
-<span class="text-xl font-bold font-serif theme-gold-text" id="timer-hours">--</span>
-<span class="text-[9px] uppercase tracking-wider theme-text-muted mt-0.5" id="label-hours">Hours</span>
-</div>
-<div class="p-3 rounded-xl theme-surface border theme-border flex flex-col items-center">
-<span class="text-xl font-bold font-serif theme-gold-text" id="timer-minutes">--</span>
-<span class="text-[9px] uppercase tracking-wider theme-text-muted mt-0.5" id="label-minutes">Mins</span>
-</div>
-<div class="p-3 rounded-xl theme-surface border theme-border flex flex-col items-center">
-<span class="text-xl font-bold font-serif theme-gold-text" id="timer-seconds">--</span>
-<span class="text-[9px] uppercase tracking-wider theme-text-muted mt-0.5" id="label-seconds">Secs</span>
-</div>
-</div>
-<span class="text-[10px] theme-text-muted mt-3 block">Deoria, Uttar Pradesh • Vedic Muhurat</span>
-</div>
-</section>
-</div>
-<div data-section="ceremonies">
-<!-- ======================================================== -->
-<!-- 3. SACRED CEREMONIES & ITINERARY (6 COMPLETE CEREMONIES)  -->
-<!-- ======================================================== -->
-<section class="w-full px-5 py-6 flex flex-col items-center">
-<div class="flex items-center gap-2 mb-1 theme-gold-text">
-<span class="text-xs">◆</span>
-<h3 class="text-lg font-serif font-bold tracking-wide" style="font-family: var(--headline-font, 'Playfair Display');">Sacred Ceremonies</h3>
-<span class="text-xs">◆</span>
-</div>
-<p class="text-xs theme-text-secondary mb-5 text-center">
-        Complete chronicle of rituals, auspicious festivities, and venues
-      </p>
-<div class="w-full flex flex-col gap-3.5">
-<!-- 2. Tilak & Shubharambh -->
-<article class="p-4 rounded-xl theme-card-bg border theme-border shadow-md flex flex-col gap-2.5 transition-all">
-<div class="flex items-start justify-between">
-<div class="flex items-center gap-3">
-<div class="w-9 h-9 rounded-full theme-surface border theme-border flex items-center justify-center theme-gold-text">
-<span class="material-symbols-outlined text-base">verified</span>
-</div>
-<div>
-<span class="text-[9px] uppercase font-bold tracking-wider theme-gold-text">Tue, 21 Nov 2026</span>
-<h4 class="text-sm font-semibold theme-text-primary">Tilak</h4>
-</div>
-</div>
-<span class="text-[10px] px-2 py-0.5 rounded-full theme-surface border theme-border theme-text-secondary">11:00 AM</span>
-</div>
-<div class="flex items-center gap-1.5 text-xs theme-text-secondary">
-<span class="material-symbols-outlined text-xs theme-gold-text">location_on</span>
-<span>Ajaypura Marwat, Pakadi, Deoria</span>
-</div>
-<div class="pt-2 flex items-center justify-between border-t theme-border text-[11px]">
-<button class="open-modal-btn px-2.5 py-1 rounded-lg theme-surface border theme-border theme-gold-text font-semibold flex items-center gap-1 text-xs active:scale-95" data-ceremony="tilak">
-<span>View Details</span>
-<span class="material-symbols-outlined text-xs">chevron_right</span>
-</button>
-</div>
-</article>
-<!-- 3. Mehendi & Folk Tunes -->
-<article class="p-4 rounded-xl theme-card-bg border theme-border shadow-md flex flex-col gap-2.5 transition-all">
-<div class="flex items-start justify-between">
-<div class="flex items-center gap-3">
-<div class="w-9 h-9 rounded-full theme-surface border theme-border flex items-center justify-center theme-gold-text">
-<span class="material-symbols-outlined text-base">palette</span>
-</div>
-<div>
-<span class="text-[9px] uppercase font-bold tracking-wider theme-gold-text">Tue, 24 Nov 2026</span>
-<h4 class="text-sm font-semibold theme-text-primary">Mehendi &amp; Sangeet</h4>
-</div>
-</div>
-<span class="text-[10px] px-2 py-0.5 rounded-full theme-surface border theme-border theme-text-secondary">5:30 PM</span>
-</div>
-<div class="flex items-center gap-1.5 text-xs theme-text-secondary">
-<span class="material-symbols-outlined text-xs theme-gold-text">location_on</span>
-<span>Indira Nagar, CC Road, Deoria</span>
-</div>
-<div class="pt-2 flex items-center justify-between border-t theme-border text-[11px]">
+      // Populate Palette Swatch List
+      function renderPalettes() {
+        if (!paletteContainer) return;
+        paletteContainer.innerHTML = "";
 
-<button class="open-modal-btn px-2.5 py-1 rounded-lg theme-surface border theme-border theme-gold-text font-semibold flex items-center gap-1 text-xs active:scale-95" data-ceremony="mehendi">
-<span>View Details</span>
-<span class="material-symbols-outlined text-xs">chevron_right</span>
-</button>
-</div>
-</article>
-<!-- 5. Haldi & Ubtan Rasam -->
-<article class="p-4 rounded-xl theme-card-bg border theme-border shadow-md flex flex-col gap-2.5 transition-all">
-<div class="flex items-start justify-between">
-<div class="flex items-center gap-3">
-<div class="w-9 h-9 rounded-full theme-surface border theme-border flex items-center justify-center theme-gold-text">
-<span class="material-symbols-outlined text-base">flare</span>
-</div>
-<div>
-<span class="text-[9px] uppercase font-bold tracking-wider theme-gold-text">Wed, 25 Nov 2026</span>
-<h4 class="text-sm font-semibold theme-text-primary">Haldi</h4>
-</div>
-</div>
-<span class="text-[10px] px-2 py-0.5 rounded-full theme-surface border theme-border theme-text-secondary">10:30 AM</span>
-</div>
-<div class="flex items-center gap-1.5 text-xs theme-text-secondary">
-<span class="material-symbols-outlined text-xs theme-gold-text">location_on</span>
-<span>Indira Nagar, CC Road, Deoria</span>
-</div>
-<div class="pt-2 flex items-center justify-between border-t theme-border text-[11px]">
+        THEMES.forEach(t => {
+          const isSelected = t.id === activeThemeId;
+          const card = document.createElement("button");
+          card.className = `p-2.5 rounded-xl border flex items-center justify-between transition-all text-left ${isSelected ? 'ring-2 ring-amber-400 theme-surface font-semibold' : 'theme-surface/60 border-transparent hover:border-amber-400/40'}`;
+          card.onclick = () => selectPalette(t.id);
 
-<button class="open-modal-btn px-2.5 py-1 rounded-lg theme-surface border theme-border theme-gold-text font-semibold flex items-center gap-1 text-xs active:scale-95" data-ceremony="haldi">
-<span>View Details</span>
-<span class="material-symbols-outlined text-xs">chevron_right</span>
-</button>
-</div>
-</article>
-<!-- 6. Shubh Vivah & Wedding Pheras -->
-<article class="p-4 rounded-xl theme-surface border theme-border shadow-xl flex flex-col gap-2.5 transition-all">
-<div class="flex items-start justify-between">
-<div class="flex items-center gap-3">
-<div class="w-9 h-9 rounded-full theme-highlight border theme-border flex items-center justify-center theme-gold-text">
-<span class="material-symbols-outlined text-base">temple_hindu</span>
-</div>
-<div>
-<span class="text-[9px] uppercase font-bold tracking-wider theme-gold-text">Wed, 25 Nov 2026</span>
-<h4 class="text-sm font-semibold theme-gold-text">Shubh Vivah</h4>
-</div>
-</div>
-<span class="text-[10px] px-2 py-0.5 rounded-full theme-gold-btn font-semibold">7:00 PM</span>
-</div>
-<div class="flex items-center gap-1.5 text-xs theme-text-secondary">
-<span class="material-symbols-outlined text-xs theme-gold-text">location_on</span>
-<span>Annapurna Marriage Hall, Parshuram Chowk, Deoria</span>
-</div>
-<div class="pt-2 flex items-center justify-between border-t theme-border text-[11px]">
-<button class="open-modal-btn px-2.5 py-1 rounded-lg theme-surface border theme-border theme-gold-text font-semibold flex items-center gap-1 text-xs active:scale-95" data-ceremony="vivah">
-<span>View Details</span>
-<span class="material-symbols-outlined text-xs">chevron_right</span>
-</button>
-</div>
-</article>
-</div>
-</section>
-</div>
-<div data-section="family-honors">
-<!-- Family Blessings (Symmetrical Cards) -->
-<section class="w-full max-w-lg px-margin-mobile py-6 flex flex-col items-center">
-<div class="flex items-center gap-2 mb-2">
-<span class="theme-gold-text text-xs">◆</span>
-<h3 class="font-serif text-lg theme-gold-text" id="family-honors-heading">
-          Family Blessings
-        </h3>
-<span class="theme-gold-text text-xs">◆</span>
-</div>
-<p class="text-xs theme-text-secondary mb-6 text-center" id="family-honors-sub">
-        With the divine blessings of our ancestors and elders
-      </p>
-<div class="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full">
-<!-- Groom's Family Card -->
-<div class="flex flex-col items-center text-center p-5 rounded-xl theme-card-bg border theme-border shadow-md">
-<div class="w-10 h-10 rounded-full theme-highlight flex items-center justify-center theme-gold-text mb-3">
-<span class="material-symbols-outlined text-lg">shield</span>
-</div>
-<span class="text-[10px] font-bold theme-gold-text tracking-widest uppercase mb-1">Groom's Side</span>
-<h4 class="font-serif text-sm theme-text-primary mb-2">Shri Wakil Yadav</h4>
-<h4 class="font-serif text-sm theme-text-primary mb-2">&amp;</h4>
-<h4 class="font-serif text-sm theme-text-primary mb-2">Smt. Asha Devi</h4>
-<p class="text-xs theme-text-secondary">
-            Grandparents &amp; Parents cordially invite you to join the celebration of love.
-          </p>
-</div>
-<!-- Bride's Family Card -->
-<!-- Bride's Family Card -->
-<div class="flex flex-col items-center text-center p-5 rounded-xl theme-card-bg border theme-border shadow-md">
-<div class="w-10 h-10 rounded-full theme-highlight flex items-center justify-center theme-gold-text mb-3">
-<span class="material-symbols-outlined text-lg">spa</span>
-</div>
-<span class="text-[10px] font-bold theme-gold-text tracking-widest uppercase mb-1">Bride's Side</span>
-<h4 class="font-serif text-sm theme-text-primary mb-2">Shri Sanjay Yadav</h4>
-<h4 class="font-serif text-sm theme-text-primary mb-2">&amp;</h4>
-<h4 class="font-serif text-sm theme-text-primary mb-2">Smt. Vimala Devi</h4>
-<p class="text-xs theme-text-secondary">
-            Warmly welcome all dear relatives and friends to bless the new chapter.
-          </p>
-</div>
-</div>
-</section>
-</div>
-<div data-section="venue">
-<!-- Destination & Venue Showcase -->
-<section class="w-full px-5 py-6">
-  <div class="flex items-center justify-center gap-2 mb-1 theme-gold-text">
-    <span class="text-xs">◆</span>
-    <h3 class="text-lg font-serif font-bold tracking-wide" style="font-family: var(--headline-font, 'Playfair Display');">Destination &amp; Venue</h3>
-    <span class="text-xs">◆</span>
-  </div>
-  <p class="text-xs theme-text-secondary mb-5 text-center">Annapurna Marriage Hall, Parshuram Chowk, Deoria, Uttar Pradesh</p>
-  <div class="w-full rounded-2xl overflow-hidden theme-card-bg border theme-border shadow-xl mb-3">
-    <div class="p-5 flex flex-col gap-3">
-      <h4 class="text-sm font-semibold theme-gold-text">Annapurna Marriage Hall</h4>
-      <p class="text-xs theme-text-secondary">Parshuram Chowk, Near Hanuman Mandir, Deoria, Uttar Pradesh 274001</p>
-      <div class="grid grid-cols-2 gap-2 text-xs p-2 rounded-lg theme-surface border theme-border">
-        <div><span class="text-[9px] uppercase theme-text-muted block">Railway</span><span class="font-medium theme-text-primary">Deoria Jn • 4.2 km</span></div>
-        <div><span class="text-[9px] uppercase theme-text-muted block">Airport</span><span class="font-medium theme-text-primary">Gorakhpur • 52 km</span></div>
-      </div>
-      <div class="grid grid-cols-2 gap-2 pt-1">
-        <a class="py-3 px-3 rounded-lg text-black text-xs font-semibold flex items-center justify-center gap-2 active:scale-95" style="background-color: var(--accent-gold);" href="https://maps.app.goo.gl/neYJPdxVLzDrL6Vz6" target="_blank" rel="noopener noreferrer"><span class="material-symbols-outlined text-sm">navigation</span><span>Directions</span></a>
-        <button class="py-3 px-3 rounded-lg theme-surface border theme-border theme-text-primary text-xs font-medium flex items-center justify-center gap-2 active:scale-95" id="venue-share-btn"><span class="material-symbols-outlined text-sm theme-gold-text">share_location</span><span>Share Venue</span></button>
-      </div>
-    </div>
-  </div>
-</section>
-</div>
-<div data-section="gallery">
-<!-- Photo Chronicle Vault Strip -->
-<section class="w-full px-5 py-4">
-<div class="flex items-center justify-between mb-3">
-<h4 class="text-xs uppercase font-bold tracking-widest theme-gold-text">Memories &amp; Moments</h4>
-<span class="text-[11px] theme-text-muted">Engagement Vault</span>
-</div>
-<div class="grid grid-cols-3 gap-2">
-<div class="aspect-square rounded-xl overflow-hidden border theme-border">
-<img alt="Couple Memory 1" class="w-full h-full object-cover" src="Memory1.jpeg"/>
-</div>
-<div class="aspect-square rounded-xl overflow-hidden border theme-border">
-<img alt="Couple Memory 2" class="w-full h-full object-cover" src="Memory2.jpeg"/>
-</div>
-<div class="aspect-square rounded-xl overflow-hidden border theme-border flex items-center justify-center theme-surface p-2 text-center">
-<div class="flex flex-col items-center">
-<span class="material-symbols-outlined theme-gold-text text-xl">auto_stories</span>
-<span class="text-[9px] uppercase font-bold theme-text-secondary mt-1">More Soon</span>
-</div>
-</div>
-</div>
-</section>
-</div>
-<div data-section="rsvp">
-<!-- RSVP & Celebration WhatsApp Portal -->
-<section class="w-full px-5 py-6 flex flex-col gap-3">
-<a class="w-full py-3.5 px-4 rounded-xl theme-gold-btn font-semibold flex items-center justify-between shadow-xl active:scale-95 transition-transform" href="https://api.whatsapp.com/send?text=Namaste!%20Accepting%20with%20great%20joy%20the%20wedding%20invitation%20for%20Piyush%20and%20Priti%27s%20wedding%20on%2025%20November%202026%20at%20Deoria." rel="noopener noreferrer" target="_blank">
-<div class="flex items-center gap-2.5">
-<span class="material-symbols-outlined text-lg">chat</span>
-<span class="text-xs uppercase tracking-wider font-bold" id="rsvp-btn-text">RSVP via WhatsApp</span>
-</div>
-<span class="material-symbols-outlined text-sm">arrow_forward</span>
-</a>
-<div class="grid grid-cols-2 gap-2 w-full">
-<button class="py-3 px-3 rounded-xl theme-surface border theme-border theme-text-primary text-xs font-semibold flex items-center justify-center gap-2 active:scale-95" id="share-card-btn">
-<span class="material-symbols-outlined text-base theme-gold-text">share</span>
-<span>Share Invitation</span>
-</button>
-<button class="py-3 px-3 rounded-xl theme-surface border theme-border theme-gold-text text-xs font-semibold flex items-center justify-center gap-2 active:scale-95" id="open-studio-bottom-btn">
-<span class="material-symbols-outlined text-base">style</span>
-<span>Style Studio</span>
-</button>
-</div>
-<div class="hidden w-full text-center py-2 px-3 rounded-lg theme-surface border theme-border theme-gold-text text-xs transition-all" id="general-toast">
-        ✨ Invitation link copied with reverence!
-      </div>
-</section>
-</div>
-<div data-section="footer">
-<!-- Footer -->
-<footer class="w-full px-5 pt-8 pb-10 flex flex-col items-center text-center">
-<div class="w-10 h-10 rounded-full theme-surface border theme-border flex items-center justify-center theme-gold-text mb-2">
-<span class="font-serif text-sm font-bold">P&amp;P</span>
-</div>
-<h5 class="text-lg font-serif theme-gold-text font-normal mb-1">Piyush &amp; Priti</h5>
-<span class="text-[10px] tracking-widest uppercase theme-text-muted">#PiyushWedsPriti • 25 November 2026</span>
-</footer>
-</div>
-</main>
-<div data-section="theme-studio">
-<!-- ======================================================== -->
-<!-- 4. LUXURY THEME & STYLE CUSTOMISATION STUDIO DRAWER       -->
-<!-- ======================================================== -->
-<div class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md opacity-0 pointer-events-none transition-opacity duration-300" id="theme-studio-backdrop"></div>
-<div class="fixed inset-x-0 bottom-0 z-50 max-h-[88vh] rounded-t-3xl theme-card-bg border-t border-x theme-border shadow-2xl flex flex-col transform translate-y-full transition-transform duration-300 ease-out max-w-lg mx-auto" id="theme-studio-drawer">
-<!-- Drawer Drag Indicator Bar -->
-<div class="w-full pt-3 pb-1 flex justify-center cursor-pointer" id="drawer-drag-handle">
-<div class="w-12 h-1.5 rounded-full bg-white/20"></div>
-</div>
-<!-- Header -->
-<div class="px-5 py-2.5 flex items-center justify-between border-b theme-border">
-<div class="flex items-center gap-2">
-<span class="material-symbols-outlined theme-gold-text text-xl">palette</span>
-<div>
-<h3 class="text-sm font-bold theme-text-primary">Theme &amp; Style Studio</h3>
-<p class="text-[10px] theme-text-muted">33 Theme Combinations (11 Themes × 3 Styles)</p>
-</div>
-</div>
-<button class="w-8 h-8 rounded-full theme-surface border theme-border theme-gold-text flex items-center justify-center hover:opacity-80" id="close-studio-btn">
-<span class="material-symbols-outlined text-base">close</span>
-</button>
-</div>
-<!-- Scrollable Studio Content -->
-<div class="p-5 overflow-y-auto no-scrollbar flex flex-col gap-5">
-<!-- STEP 1: SELECT PALETTE (11 PALETTES) -->
-<section class="flex flex-col gap-2">
-<div class="flex items-center justify-between">
-<span class="text-xs uppercase font-bold tracking-wider theme-gold-text">Step 1: Choose Color Palette</span>
-<span class="text-[10px] theme-text-muted">11 Color Schemes</span>
-</div>
-<!-- Palette Swatch Grid -->
-<div class="grid grid-cols-1 gap-2" id="palette-selection-container">
-<!-- Generated via JS for immaculate clarity & swatches -->
-</div>
-</section>
-<!-- STEP 2: SELECT VISUAL STYLE (3 DISTINCT STYLES) -->
-<section class="flex flex-col gap-2 pt-2">
-<div class="flex items-center justify-between">
-<span class="text-xs uppercase font-bold tracking-wider theme-gold-text">Step 2: Choose Visual Style</span>
-<span class="text-[10px] theme-text-muted">3 Architectural Moods</span>
-</div>
-<div class="grid grid-cols-3 gap-2" id="style-selection-container">
-<!-- Style A: Classic Style -->
-<button class="style-choice-btn p-3 rounded-xl border flex flex-col items-center text-center transition-all relative overflow-hidden" data-style-id="classic-royal">
-<span class="material-symbols-outlined text-xl mb-1 text-amber-400">shield</span>
-<span class="text-xs font-bold theme-text-primary block">Classic Style</span>
-<span class="text-[9px] theme-text-muted leading-tight mt-0.5">Jharokha arches, Sanskrit shlokas &amp; seal</span>
-</button>
-<!-- Style B: Modern Editorial -->
-<button class="style-choice-btn p-3 rounded-xl border flex flex-col items-center text-center transition-all relative overflow-hidden" data-style-id="modern-editorial">
-<span class="material-symbols-outlined text-xl mb-1 text-amber-400">auto_awesome_mosaic</span>
-<span class="text-xs font-bold theme-text-primary block">Modern Editorial</span>
-<span class="text-[9px] theme-text-muted leading-tight mt-0.5">Vogue elegance, hairlines &amp; whitespace</span>
-</button>
-<!-- Style C: Romantic Floral -->
-<button class="style-choice-btn p-3 rounded-xl border flex flex-col items-center text-center transition-all relative overflow-hidden" data-style-id="romantic-floral">
-<span class="material-symbols-outlined text-xl mb-1 text-amber-400">local_florist</span>
-<span class="text-xs font-bold theme-text-primary block">Romantic Floral</span>
-<span class="text-[9px] theme-text-muted leading-tight mt-0.5">Lotus garlands, soft curves &amp; script</span>
-</button>
-</div>
-</section>
-<!-- Actions -->
-<div class="pt-3 pb-2 flex flex-col gap-2">
-<button class="w-full py-3 rounded-xl theme-gold-btn text-xs font-bold uppercase tracking-wider shadow-lg active:scale-95 transition-all" id="apply-studio-btn">
-          Apply Theme &amp; Style to Invitation
-        </button>
-<div class="flex items-center gap-2">
-<button class="flex-1 py-2 text-center text-xs theme-surface border theme-border theme-text-secondary rounded-lg hover:opacity-80" id="reset-default-btn">
-            Reset to Black & Gold Default
-          </button>
-<button class="flex-1 py-2 text-center text-xs theme-surface border theme-border theme-gold-text rounded-lg hover:opacity-80" id="copy-theme-code-btn">
-            Share Theme Preset
-          </button>
-</div>
-</div>
-</div>
-</div>
-<!-- ======================================================== -->
-</div>
-<div data-section="ceremony-modal">
-<!-- 5. CEREMONY DETAILS MODAL DIALOG CONTAINER               -->
-<!-- ======================================================== -->
-<div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-sm opacity-0 pointer-events-none transition-all duration-300" id="ceremony-modal">
-<div class="w-full max-w-sm theme-card-bg rounded-2xl p-5 border theme-border shadow-2xl relative flex flex-col gap-3.5 transform scale-95 transition-transform duration-300" id="ceremony-modal-box">
-<button class="absolute top-3.5 right-3.5 w-7 h-7 rounded-full theme-surface border theme-border theme-gold-text flex items-center justify-center" id="close-modal-btn">
-<span class="material-symbols-outlined text-sm">close</span>
-</button>
-<div class="flex flex-col items-center text-center pt-1">
-<div class="w-11 h-11 rounded-full theme-surface border theme-border flex items-center justify-center theme-gold-text mb-2" id="modal-icon-wrapper">
-<span class="material-symbols-outlined text-xl" id="modal-icon">favorite</span>
-</div>
-<span class="text-[9px] uppercase font-bold tracking-widest theme-gold-text" id="modal-tag">Ceremony Details</span>
-<h3 class="text-base font-serif font-bold theme-text-primary mt-0.5" id="modal-title">Sagai &amp; Engagement</h3>
-<p class="text-xs theme-text-secondary mt-0.5" id="modal-datetime">Monday, 23 Nov 2026 • 6:00 PM</p>
-</div>
-<div class="w-full h-px theme-border border-b"></div>
-<div class="flex flex-col gap-2.5 text-xs">
-<div class="p-2.5 rounded-lg theme-surface border theme-border flex items-start gap-2">
-<span class="material-symbols-outlined text-sm theme-gold-text mt-0.5">location_on</span>
-<div>
-<span class="font-bold theme-text-primary block text-[11px]">Venue</span>
-<span class="theme-text-secondary text-[11px]" id="modal-venue">Darbar Hall, Deoria Palace Grounds</span>
-</div>
-</div>
-<div class="p-2.5 rounded-lg theme-surface border theme-border flex items-start gap-2">
-<span class="material-symbols-outlined text-sm theme-gold-text mt-0.5">auto_awesome</span>
-<div>
-<span class="font-bold theme-text-primary block text-[11px]">Ceremony Chronicle</span>
-<span class="theme-text-secondary text-[11px]" id="modal-notes">A sacred celebration with blessings &amp; sweets.</span>
-</div>
-</div>
-</div>
-<div class="pt-2 flex flex-col gap-1.5">
-<a class="hidden w-full py-2.5 rounded-xl theme-surface border theme-border theme-gold-text text-xs font-bold items-center justify-center gap-1.5 active:scale-95" id="modal-location-btn" href="#" target="_blank" rel="noopener noreferrer">
-<span class="material-symbols-outlined text-sm">location_on</span>
-<span>View Location</span>
-</a>
-<button class="w-full py-2.5 rounded-xl theme-gold-btn text-xs font-bold flex items-center justify-center gap-1.5 shadow active:scale-95" id="modal-calendar-btn">
-<span class="material-symbols-outlined text-sm">event</span>
-<span>Save Event to Calendar</span>
-</button>
-<button class="w-full py-1 text-center text-[11px] theme-text-muted hover:text-white" id="modal-dismiss-btn">
-          Dismiss
-        </button>
-</div>
-</div>
-</div>
-<!-- ======================================================== -->
-</div>
-<script src="js/app.js"></script>
-</body>
-</html>
+          card.innerHTML = `
+            <div class="flex items-center gap-2.5">
+              <div class="w-7 h-7 rounded-full flex overflow-hidden border border-white/20 shrink-0 shadow-sm">
+                <div class="w-1/2 h-full" style="background-color: ${t.swatchPrimary}"></div>
+                <div class="w-1/2 h-full" style="background-color: ${t.swatchSecondary}"></div>
+              </div>
+              <div class="flex flex-col">
+                <span class="text-xs font-semibold theme-text-primary leading-snug">${t.name}</span>
+                <span class="text-[9px] theme-text-muted leading-tight">${t.mood}</span>
+              </div>
+            </div>
+            ${isSelected ? '<span class="material-symbols-outlined text-sm theme-gold-text">check_circle</span>' : ''}
+          `;
+          paletteContainer.appendChild(card);
+        });
+      }
+
+      function updateActiveVisuals() {
+        const t = THEMES.find(item => item.id === activeThemeId);
+        if (!t) return;
+
+        // Apply CSS Variables
+        for (const [key, val] of Object.entries(t.vars)) {
+          document.documentElement.style.setProperty(key, val);
+        }
+
+        // Apply Data Attributes
+        body.setAttribute("data-theme-id", activeThemeId);
+        body.setAttribute("data-visual-style", activeStyleId);
+
+        // Update indicators
+        const styleName = activeStyleId === 'classic-royal' ? 'Classic Style' : (activeStyleId === 'modern-editorial' ? 'Modern Editorial' : 'Romantic Floral');
+        if (themeLabel) themeLabel.innerText = `${t.name} • ${styleName}`;
+        if (themeSwatch) themeSwatch.style.backgroundColor = t.swatchSecondary;
+
+        // Update style selection buttons in drawer
+        styleButtons.forEach(btn => {
+          const sId = btn.getAttribute("data-style-id");
+          if (sId === activeStyleId) {
+            btn.classList.add("ring-2", "ring-amber-400", "theme-surface");
+            btn.classList.remove("opacity-70");
+          } else {
+            btn.classList.remove("ring-2", "ring-amber-400", "theme-surface");
+            btn.classList.add("opacity-70");
+          }
+        });
+
+        renderPalettes();
+      }
+
+      function selectPalette(id) {
+        activeThemeId = id;
+        updateActiveVisuals();
+      }
+
+      function selectStyle(id) {
+        activeStyleId = id;
+        updateActiveVisuals();
+      }
+
+      styleButtons.forEach(btn => {
+        btn.addEventListener("click", () => {
+          const sId = btn.getAttribute("data-style-id");
+          if (sId) selectStyle(sId);
+        });
+      });
+
+      // 2. STUDIO DRAWER TOGGLES
+      const drawer = document.getElementById("theme-studio-drawer");
+      const backdrop = document.getElementById("theme-studio-backdrop");
+      const openBtn1 = document.getElementById("open-studio-drawer-btn");
+      const openBtn2 = document.getElementById("floating-customizer-btn");
+      const openBtn3 = document.getElementById("open-studio-bottom-btn");
+      const closeBtn = document.getElementById("close-studio-btn");
+      const dragHandle = document.getElementById("drawer-drag-handle");
+      const applyBtn = document.getElementById("apply-studio-btn");
+      const resetBtn = document.getElementById("reset-default-btn");
+      const shareThemeBtn = document.getElementById("copy-theme-code-btn");
+
+      function openDrawer() {
+        if (!drawer || !backdrop) return;
+        backdrop.classList.remove("opacity-0", "pointer-events-none");
+        drawer.classList.remove("translate-y-full");
+      }
+
+      function closeDrawer() {
+        if (!drawer || !backdrop) return;
+        drawer.classList.add("translate-y-full");
+        backdrop.classList.add("opacity-0", "pointer-events-none");
+      }
+
+      [openBtn1, openBtn2, openBtn3].forEach(b => b?.addEventListener("click", openDrawer));
+      [closeBtn, backdrop, dragHandle].forEach(b => b?.addEventListener("click", closeDrawer));
+
+      applyBtn?.addEventListener("click", () => {
+        closeDrawer();
+        showToast("✨ Applied custom Theme & Style preset!");
+      });
+
+      resetBtn?.addEventListener("click", () => {
+        activeThemeId = "royal-black";
+        activeStyleId = "classic-royal";
+        updateActiveVisuals();
+        showToast("✨ Restored to Black & Antique Gold");
+      });
+
+      shareThemeBtn?.addEventListener("click", () => {
+        const theme = THEMES.find(t => t.id === activeThemeId);
+        const styleName = activeStyleId === 'classic-royal' ? 'Classic Style' : (activeStyleId === 'modern-editorial' ? 'Modern Editorial' : 'Romantic Floral');
+        const text = `Wedding Invitation Theme Preset: ${theme?.name} (${styleName})`;
+        navigator.clipboard?.writeText(text);
+        showToast(`✨ Preset Copied: ${text}`);
+      });
+
+      // Toast feedback helper
+      function showToast(msg) {
+        const toast = document.getElementById("general-toast");
+        if (toast) {
+          toast.innerText = msg;
+          toast.classList.remove("hidden");
+          setTimeout(() => toast.classList.add("hidden"), 3000);
+        }
+      }
+
+      // 3. COVER UNSEAL INTERACTION
+      const openCoverBtn = document.getElementById('open-invitation-btn');
+      const cover = document.getElementById('invitation-cover');
+      if (openCoverBtn && cover) {
+        openCoverBtn.addEventListener('click', function() {
+          openCoverBtn.classList.add('scale-90', 'opacity-70');
+          setTimeout(() => {
+            cover.classList.add('-translate-y-full', 'opacity-0', 'pointer-events-none');
+            // Unlock page scrolling only after the cover opens, and start the invitation at the top.
+            document.body.classList.remove('overflow-hidden');
+            document.documentElement.style.overflow = '';
+            window.scrollTo({ top: 0, behavior: 'instant' });
+          }, 350);
+        });
+      }
+
+      // 4. AUDIO TOGGLE (SHEHNAI SIMULATION)
+      let isPlaying = true;
+      const coverAudioBtn = document.getElementById('cover-audio-btn');
+      const innerAudioBtn = document.getElementById('inner-audio-toggle');
+      function toggleAudio() {
+        isPlaying = !isPlaying;
+        const iconSpan = innerAudioBtn?.querySelector('.material-symbols-outlined');
+        if (iconSpan) iconSpan.innerText = isPlaying ? 'volume_up' : 'volume_off';
+        showToast(isPlaying ? "Shehnai melody resumed" : "Audio muted");
+      }
+      coverAudioBtn?.addEventListener('click', toggleAudio);
+      innerAudioBtn?.addEventListener('click', toggleAudio);
+
+      // 5. LANGUAGE SWITCHER
+      const langEn = document.getElementById('lang-en-cover');
+      const langHi = document.getElementById('lang-hi-cover');
+      const langInner = document.getElementById('lang-switch-inner');
+
+      // Full-page bilingual text map. Keeps names and real venue addresses unchanged.
+      const TEXT_HI = {
+        "Wedding Invitation": "विवाह निमंत्रण",
+        "Open Invitation": "निमंत्रण खोलें",
+        "Open your invitation": "निमंत्रण पत्र खोलें",
+        "Shehnai": "शहनाई",
+        "With Love, Blessings & Good Wishes": "स्नेह, आशीर्वाद एवं शुभकामनाओं सहित",
+        "The families cordially solicit your august presence and heartfelt blessings on the auspicious union and matrimonial solemnization of their beloved children.": "दोनों परिवार अपने प्रिय बच्चों के शुभ विवाह के पावन अवसर पर आपकी गरिमामयी उपस्थिति और स्नेहपूर्ण आशीर्वाद की विनम्र प्रार्थना करते हैं।",
+        "Together Forever": "सदा के लिए एक-दूजे के",
+        "“Two souls, one sacred journey woven in the timeless tapestry of devotion, laughter, and eternal love.”": "“दो आत्माएँ, एक पावन यात्रा—समर्पण, मुस्कान और अनंत प्रेम के अटूट बंधन में बँधी हुई।”",
+        "Auspicious Mahurat Countdown": "शुभ विवाह मुहूर्त की उलटी गिनती",
+        "Wednesday, 25 November 2026": "बुधवार, 25 नवम्बर 2026",
+        "Days": "दिन", "Hours": "घंटे", "Mins": "मिनट", "Secs": "सेकंड",
+        "Deoria, Uttar Pradesh • Vedic Muhurat": "देवरिया, उत्तर प्रदेश • वैदिक मुहूर्त",
+        "Sacred Ceremonies": "पावन विवाह समारोह",
+        "Complete chronicle of rituals, auspicious festivities, and venues": "सभी रस्मों, मंगल उत्सवों और आयोजन स्थलों का विवरण",
+        "Tue, 21 Nov 2026": "मंगलवार, 21 नवम्बर 2026",
+        "Tue, 24 Nov 2026": "मंगलवार, 24 नवम्बर 2026",
+        "Wed, 25 Nov 2026": "बुधवार, 25 नवम्बर 2026",
+        "Tilak": "तिलक",
+        "Mehendi & Sangeet": "मेहंदी एवं संगीत",
+        "Haldi": "हल्दी",
+        "Shubh Vivah": "शुभ विवाह",
+        "Details": "विवरण",
+        "View Details": "विवरण देखें",
+        "View Location": "स्थान देखें",
+        "Family Blessings": "परिवार का आशीर्वाद",
+        "With the divine blessings of our ancestors and elders": "हमारे पूर्वजों एवं बड़ों के दिव्य आशीर्वाद सहित",
+        "Groom's Side": "वर पक्ष",
+        "Bride's Side": "वधू पक्ष",
+        "Grandparents & Parents cordially invite you to join the celebration of love.": "दादा-दादी एवं माता-पिता आपको प्रेम और मंगल के इस उत्सव में सादर आमंत्रित करते हैं।",
+        "Warmly welcome all dear relatives and friends to bless the new chapter.": "नए जीवन-अध्याय को आशीर्वाद देने हेतु सभी प्रिय रिश्तेदारों एवं मित्रों का हार्दिक स्वागत है।",
+        "Destination & Venue": "विवाह स्थल एवं पहुँचने का विवरण",
+        "Annapurna Marriage Hall, Parshuram Chowk, Deoria, Uttar Pradesh": "अन्नपूर्णा मैरेज हॉल,परशुराम चौक,देवरिया, उत्तर प्रदेश",
+        "Annapurna Marriage Hall, Parshuram Chowk, Deoria, Uttar Pradesh · View on Map": "अन्नपूर्णा मैरेज हॉल,परशुराम चौक,देवरिया, उत्तर प्रदेश · मानचित्र देखें",
+        "CC Road, Near Hanuman Mandir, Deoria, Uttar Pradesh 274001 · View on Map": "सीसी रोड, हनुमान मंदिर के पास, देवरिया, उत्तर प्रदेश 274001 · मानचित्र देखें",
+        "CC Road, Near Hanuman Mandir, Deoria, Uttar Pradesh 274001": "सीसी रोड, हनुमान मंदिर के पास, देवरिया, उत्तर प्रदेश 274001",
+        "Railway": "रेलवे स्टेशन", "Airport": "हवाई अड्डा",
+        "Directions": "रास्ता देखें", "Share Venue": "विवाह स्थल साझा करें",
+        "Memories & Moments": "यादगार पल",
+        "Engagement Vault": "सगाई की यादें",
+        "RSVP via WhatsApp": "व्हाट्सऐप पर जवाब दें",
+        "Share Invitation": "निमंत्रण साझा करें",
+        "Theme Studio": "थीम स्टूडियो",
+        "Customize (33)": "रूप सज्जा (33)",
+        "Memories": "यादें", "Piyush & Priti": "Piyush & Priti",
+        "Sagai & Engagement": "सगाई एवं अंगूठी समारोह",
+        "Monday, 23 Nov 2026 • 6:00 PM onwards": "सोमवार, 23 नवम्बर 2026 • शाम 6:00 बजे से",
+        "Tuesday, 24 Nov 2026 • 11:00 AM": "मंगलवार, 24 नवम्बर 2026 • सुबह 11:00 बजे",
+        "Tuesday, 24 Nov 2026 • 5:30 PM": "मंगलवार, 24 नवम्बर 2026 • शाम 5:30 बजे",
+        "Tuesday, 24 Nov 2026 • 7:30 PM onwards": "मंगलवार, 24 नवम्बर 2026 • शाम 7:30 बजे से",
+        "Wednesday, 25 Nov 2026 • 10:30 AM": "बुधवार, 25 नवम्बर 2026 • सुबह 10:30 बजे",
+        "Wednesday, 25 Nov 2026 • 7:00 PM (Pheras: Midnight)": "बुधवार, 25 नवम्बर 2026 • शाम 7:00 बजे (फेरे: मध्यरात्रि)",
+        "Darbar Hall, Deoria Palace Grounds": "दरबार हॉल, देवरिया पैलेस परिसर",
+        "Elegant Pastels & Jodhpuri Coats": "हल्के सुंदर रंग एवं जोधपुरी कोट",
+        "Sacred exchange of rings blessed by elders, followed by traditional Bhojpuri welcome songs and family dinner.": "बड़ों के आशीर्वाद से अंगूठियों का पावन आदान-प्रदान, पारंपरिक भोजपुरी स्वागत गीत और पारिवारिक भोज।",
+        "Traditional Silk Kurta & Dhoti / Nehru Jackets": "पारंपरिक रेशमी कुर्ता एवं धोती / नेहरू जैकेट",
+        "Auspicious Tilak ceremony invoking Lord Ganesha's blessings with sandalwood paste, sweets, and gift presentations.": "चंदन, मिठाइयों और उपहारों के साथ भगवान गणेश के आशीर्वाद हेतु मंगल तिलक समारोह।",
+        "Floral Lehengas & Festive Kurtas (Green / Floral shades)": "फूलों वाले लहंगे एवं उत्सवी कुर्ते (हरे/फूलों के रंग)",
+        "Intricate Rajasthani & Arabic henna artistry, live Dholak beats, traditional wedding geet, and folk dance.": "राजस्थानी एवं अरबी मेहंदी कला, ढोलक की धुनें, पारंपरिक विवाह गीत और लोकनृत्य।",
+        "Sangeet & Musical Night": "संगीत एवं सुरमयी संध्या",
+        "Ballroom & Grand Lawns": "बॉलरूम एवं विशाल लॉन",
+        "Festive Bandhgala Attire": "आकर्षक बंदगला परिधान",
+        "Celebratory choreography by families, live Shehnai-Sufi band lineup, followed by grand feast.": "परिवारों की मनमोहक प्रस्तुतियाँ, शहनाई-सूफी संगीत और भव्य भोज।",
+        "Shades of Saffron & Mustard Yellow": "केसरिया एवं सरसों पीले रंग के परिधान",
+        "Sacred turmeric and sandalwood paste application with marigold showers, traditional songs, and morning brunch.": "हल्दी एवं चंदन की पावन रस्म, गेंदे के फूलों की वर्षा, पारंपरिक गीत और सुबह का नाश्ता।",
+        "Traditional Indian Attire & Heirloom Silks": "पारंपरिक भारतीय एवं रेशमी परिधान",
+        "Grand Baraat welcome, Varmala under the starry canopy, sacred Vedic Vivah Sanskar around Agni, and Vidai.": "भव्य बारात स्वागत, तारों की छाँव में वरमाला, अग्नि के समक्ष वैदिक विवाह संस्कार और विदाई।",
+        "Ceremony Details": "समारोह का विवरण",
+        "Ceremony Chronicle": "समारोह की जानकारी",
+        "Save Event to Calendar": "कैलेंडर में इवेंट सेव करें",
+        "Dismiss": "बंद करें",
+        "Apply Theme & Style to Invitation": "निमंत्रण पर थीम और शैली लागू करें",
+        "Reset to Black & Gold Default": "काले और सुनहरे रंगों पर लौटें",
+        "Share Theme Preset": "थीम साझा करें",
+        "STEP 1: SELECT PALETTE (11 PALETTES)": "चरण 1: रंग संयोजन चुनें (11 विकल्प)",
+        "STEP 2: SELECT VISUAL STYLE (3 DISTINCT STYLES)": "चरण 2: दृश्य शैली चुनें (3 विकल्प)",
+        "Style A: Classic Style": "शैली A: पारंपरिक शैली",
+        "Style B: Modern Editorial": "शैली B: आधुनिक संपादकीय",
+        "Style C: Romantic Floral": "शैली C: रोमांटिक पुष्प",
+        "33 Theme Combinations (11 Themes × 3 Styles)": "33 थीम संयोजन (11 रंग-रूप × 3 शैलियाँ)",
+        "Themed invitation loaded": "थीम वाला निमंत्रण खुल गया",
+        "✨ Applied custom Theme & Style preset!": "✨ चुनी हुई थीम और शैली लागू हो गई!",
+        "✨ Restored to Black & Antique Gold": "✨ काले और एंटीक गोल्ड की थीम बहाल की गई",
+        "Shehnai melody resumed": "शहनाई की धुन फिर शुरू हुई",
+        "Audio muted": "ध्वनि बंद है",
+        "✨ Invitation URL copied to clipboard!": "✨ निमंत्रण का लिंक कॉपी हो गया!",
+        "✨ Venue address copied!": "✨ विवाह स्थल का पता कॉपी हो गया!",
+        "P & P": "P & P",
+        "Nov 2026": "नवम्बर 2026",
+        "Music toggle": "संगीत चालू/बंद करें",
+        "Language Switch": "भाषा बदलें",
+        "Decorative Wax Seal": "सजावटी मोहर",
+        "Open Invitation CTA": "निमंत्रण खोलें",
+        "Arch Motif Watermark": "मेहराब की सजावट",
+        "Formal Family Grace Box": "परिवार का स्नेह संदेश",
+        "Couple Editorial Frame": "वर-वधू का चित्र",
+        "Romantic Quote": "प्रेम संदेश",
+        "Live Wedding Countdown Section": "विवाह की उलटी गिनती",
+        "4-Box Countdown Grid": "समय की उलटी गिनती",
+        "RSVP & Celebration WhatsApp Portal": "व्हाट्सऐप पर अपनी उपस्थिति बताएँ",
+        "More Soon": "जल्द आ रहा है",
+        "Venue": "विवाह स्थल",
+        "Sagai & Engagement": "सगाई एवं अंगूठी समारोह",
+        "Header": "शीर्षक",
+        "Actions": "विकल्प",
+        "Step 1: Choose Color Palette": "चरण 1: रंग संयोजन चुनें",
+        "11 Color Schemes": "11 रंग संयोजन",
+        "Palette Swatch Grid": "रंगों के विकल्प",
+        "Generated via JS for immaculate clarity & swatches": "रंगों के विकल्प यहाँ प्रदर्शित होंगे",
+        "Step 2: Choose Visual Style": "चरण 2: दृश्य शैली चुनें",
+        "3 Architectural Moods": "3 विशिष्ट दृश्य शैलियाँ",
+        "Classic Style": "पारंपरिक शैली",
+        "Jharokha arches, Sanskrit shlokas & seal": "झरोखे, संस्कृत श्लोक और सजावटी मोहर",
+        "Modern Editorial": "आधुनिक संपादकीय",
+        "Vogue elegance, hairlines & whitespace": "आधुनिक सुरुचि, महीन रेखाएँ और खुला लेआउट",
+        "Romantic Floral": "रोमांटिक पुष्प शैली",
+        "Lotus garlands, soft curves & script": "कमल की मालाएँ, कोमल आकृतियाँ और सुंदर अक्षर",
+        "A sacred celebration with blessings & sweets.": "आशीर्वाद और मिठाइयों से सुसज्जित एक पावन उत्सव।",
+        "Floral Lehengas & Kurta": "फूलों की कढ़ाई वाले लहंगे एवं कुर्ते",
+        "Studio Engine Active": "थीम स्टूडियो सक्रिय",
+        "Black & Gold • Classic Style": "काला एवं सुनहरा • पारंपरिक शैली",
+        "Customize": "रूप सज्जा",
+        "Select Palette": "रंग संयोजन चुनें",
+        "Select Visual Style": "दृश्य शैली चुनें",
+        "Apply": "लागू करें",
+        "Reset": "रीसेट करें",
+        "Share": "साझा करें"
+      };
+      const TEXT_EN = Object.fromEntries(Object.entries(TEXT_HI).map(([en, hi]) => [hi, en]));
+      let currentLang = 'en';
+      function translatePage(lang) {
+        currentLang = lang;
+        const dict = lang === 'hi' ? TEXT_HI : TEXT_EN;
+        const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+        let node;
+        while ((node = walker.nextNode())) {
+          const parent = node.parentElement;
+          if (!parent || parent.closest('script, style, .material-symbols-outlined, [data-no-translate]')) continue;
+          const original = node.nodeValue;
+          const normalized = original.replace(/\s+/g, ' ').trim();
+          if (!normalized || !Object.prototype.hasOwnProperty.call(dict, normalized)) continue;
+          const translated = dict[normalized];
+          const leading = original.match(/^\s*/)?.[0] || '';
+          const trailing = original.match(/\s*$/)?.[0] || '';
+          node.nodeValue = leading + translated + trailing;
+        }
+        document.documentElement.lang = lang === 'hi' ? 'hi' : 'en';
+      }
+
+      const i18n = {
+        en: {
+          mantra: "॥ श्री गणेशाय नमः ॥",
+          eyebrow: "Wedding Invitation",
+          btnText: "Open Invitation",
+          venue: "Deoria, Uttar Pradesh, India",
+          inviteMsg: "The families cordially solicit your august presence and heartfelt blessings on the auspicious union and matrimonial solemnization of their beloved children.",
+          quote: "“Two souls, one sacred journey woven in the timeless tapestry of devotion, laughter, and eternal love.”",
+          countdown: "Auspicious Mahurat Countdown",
+          days: "Days", hours: "Hours", mins: "Mins", secs: "Secs",
+          rsvp: "RSVP via WhatsApp"
+        },
+        hi: {
+          mantra: "॥ ॐ श्री गणेशाय नमः ॥",
+          eyebrow: "विवाह निमंत्रण",
+          btnText: "आमंत्रण पत्र खोलें",
+          venue: "देवरिया, उत्तर प्रदेश, भारत",
+          inviteMsg: "परम पिता परमात्मा की असीम अनुकंपा से हमारे सुपुत्र एवं सुपुत्री के पावन परिणय संस्कार के इस मांगलिक अवसर पर आप सादर आमंत्रित हैं।",
+          quote: "“दो आत्माओं का एक पवित्र संगम, जो स्नेह, समर्पण और अनंत प्रेम के सूत्र में बंधा है।”",
+          countdown: "शुभ विवाह मुहूर्त समय",
+          days: "दिन", hours: "घंटे", mins: "मिनट", secs: "सेकंड",
+          rsvp: "व्हाट्सएप द्वारा उत्तर दें"
+        }
+      };
+
+      function setLang(lang) {
+        const d = i18n[lang];
+        document.getElementById('cover-ganesh-mantra').innerText = d.mantra;
+        document.getElementById('cover-eyebrow').innerText = d.eyebrow;
+        document.getElementById('cover-btn-text').innerText = d.btnText;
+        document.getElementById('cover-venue').innerText = d.venue;
+        document.getElementById('inner-invitation-message').innerText = d.inviteMsg;
+        document.getElementById('inner-quote').innerText = d.quote;
+        document.getElementById('countdown-label').innerText = d.countdown;
+        document.getElementById('label-days').innerText = d.days;
+        document.getElementById('label-hours').innerText = d.hours;
+        document.getElementById('label-minutes').innerText = d.mins;
+        document.getElementById('label-seconds').innerText = d.secs;
+        document.getElementById('rsvp-btn-text').innerText = d.rsvp;
+
+        if (lang === 'en') {
+          langEn?.classList.add('bg-amber-400', 'text-black');
+          langHi?.classList.remove('bg-amber-400', 'text-black');
+          if (langInner) langInner.innerText = 'हिन्दी';
+        } else {
+          langHi?.classList.add('bg-amber-400', 'text-black');
+          langEn?.classList.remove('bg-amber-400', 'text-black');
+          if (langInner) langInner.innerText = 'English';
+        }
+        translatePage(lang);
+      }
+
+      langEn?.addEventListener('click', () => setLang('en'));
+      langHi?.addEventListener('click', () => setLang('hi'));
+      langInner?.addEventListener('click', () => {
+        const cur = langInner.innerText === 'हिन्दी' ? 'hi' : 'en';
+        setLang(cur);
+      });
+
+      // 6. LIVE COUNTDOWN TIMER (25 Nov 2026)
+      const targetDate = new Date('2026-11-25T19:00:00+05:30').getTime();
+      function updateTimer() {
+        const diff = targetDate - new Date().getTime();
+        if (diff > 0) {
+          const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+          const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+          const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+          const s = Math.floor((diff % (1000 * 60)) / 1000);
+          document.getElementById('timer-days').innerText = d < 10 ? '0' + d : d;
+          document.getElementById('timer-hours').innerText = h < 10 ? '0' + h : h;
+          document.getElementById('timer-minutes').innerText = m < 10 ? '0' + m : m;
+          document.getElementById('timer-seconds').innerText = s < 10 ? '0' + s : s;
+        }
+      }
+      updateTimer();
+      setInterval(updateTimer, 1000);
+
+      // 7. CEREMONIES DATA & MODAL (ALL 6 RITUALS)
+      const ceremonies = {
+        sagai: {
+          title: "Sagai & Engagement",
+          datetime: "Monday, 23 Nov 2026 • 6:00 PM onwards",
+          venue: "Darbar Hall, Deoria Palace Grounds",
+          notes: "Sacred exchange of rings blessed by elders, followed by traditional Bhojpuri welcome songs and family dinner.",
+          icon: "favorite",
+          start: "20261123T180000", end: "20261123T220000"
+        },
+        tilak: {
+          title: "Tilak",
+          datetime: "Tuesday, 24 Nov 2026 • 11:00 AM",
+          venue: "Ajaypura Marwat, Pakadi, Deoria",
+          notes: "Auspicious Tilak ceremony invoking Lord Ganesha's blessings with sandalwood paste, sweets, and gift presentations.",
+          icon: "verified",
+          locationUrl: "https://maps.app.goo.gl/Gzwegp7iD2AQd2zZ8",
+          start: "20261124T110000", end: "20261124T140000"
+        },
+        mehendi: {
+          title: "Mehendi & Sangeet",
+          datetime: "Tuesday, 24 Nov 2026 • 5:30 PM",
+          venue: "at Home, Indira Nagar, CC Road, Deoria",
+          notes: "Intricate Rajasthani & Arabic henna artistry, live Dholak beats, traditional wedding geet, and folk dance.",
+          icon: "palette",
+          start: "20261124T153000", end: "20261124T183000"
+        },
+        sangeet: {
+          title: "Sangeet & Musical Night",
+          datetime: "Tuesday, 24 Nov 2026 • 7:30 PM onwards",
+          venue: "Ballroom & Grand Lawns",
+          notes: "Celebratory choreography by families, live Shehnai-Sufi band lineup, followed by grand feast.",
+          icon: "nightlife",
+          start: "20261124T193000", end: "20261124T235900"
+        },
+        haldi: {
+          title: "Haldi",
+          datetime: "Wednesday, 25 Nov 2026 • 10:30 AM",
+          venue: "Indira Nagar, CC Road, Deoria",
+          notes: "Sacred turmeric and sandalwood paste application with marigold showers, traditional songs, and morning brunch.",
+          icon: "flare",
+          start: "20261125T093000", end: "20261125T123000"
+        },
+        vivah: {
+          title: "Shubh Vivah",
+          datetime: "Wednesday, 25 Nov 2026 • 7:00 PM (Pheras: Midnight)",
+          venue: "Annapurna Marriage Hall, Parshuram Chowk, Deoria",
+          notes: "Grand Baraat welcome, Varmala under the starry canopy, sacred Vedic Vivah Sanskar around Agni, and Vidai.",
+          icon: "temple_hindu",
+          locationUrl: "https://maps.app.goo.gl/neYJPdxVLzDrL6Vz6",
+          start: "20261125T190000", end: "20261126T020000"
+        }
+      };
+
+      const modal = document.getElementById('ceremony-modal');
+      const modalBox = document.getElementById('ceremony-modal-box');
+      let currentCeremonyKey = 'sagai';
+
+      function openModal(key) {
+        const item = ceremonies[key];
+        if (!item) return;
+        currentCeremonyKey = key;
+        document.getElementById('modal-title').innerText = item.title;
+        document.getElementById('modal-datetime').innerText = item.datetime;
+        document.getElementById('modal-venue').innerText = item.venue;
+        document.getElementById('modal-notes').innerText = item.notes;
+        document.getElementById('modal-icon').innerText = item.icon;
+        const locationBtn = document.getElementById('modal-location-btn');
+        if (item.locationUrl) {
+          locationBtn.href = item.locationUrl;
+          locationBtn.classList.remove('hidden');
+          locationBtn.classList.add('flex');
+        } else {
+          locationBtn.href = '#';
+          locationBtn.classList.add('hidden');
+          locationBtn.classList.remove('flex');
+        }
+        if (currentLang === 'hi') translatePage('hi');
+
+        modal.classList.remove('opacity-0', 'pointer-events-none');
+        modalBox.classList.remove('scale-95');
+        modalBox.classList.add('scale-100');
+      }
+
+      function closeModal() {
+        modalBox.classList.remove('scale-100');
+        modalBox.classList.add('scale-95');
+        modal.classList.add('opacity-0', 'pointer-events-none');
+      }
+
+      document.querySelectorAll('.open-modal-btn').forEach(b => {
+        b.addEventListener('click', (e) => {
+          e.stopPropagation();
+          openModal(b.getAttribute('data-ceremony'));
+        });
+      });
+
+      document.getElementById('close-modal-btn')?.addEventListener('click', closeModal);
+      document.getElementById('modal-dismiss-btn')?.addEventListener('click', closeModal);
+      modal?.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+
+      document.getElementById('modal-calendar-btn')?.addEventListener('click', () => {
+        const item = ceremonies[currentCeremonyKey];
+        if (!item) return;
+
+        // Keep the original behaviour: open Google Calendar's event template page.
+        // Ceremony times are stored in India Standard Time (UTC+05:30).
+        const toGoogleCalendarStamp = (localStamp) => {
+          const y = Number(localStamp.slice(0, 4));
+          const mo = Number(localStamp.slice(4, 6)) - 1;
+          const d = Number(localStamp.slice(6, 8));
+          const hh = Number(localStamp.slice(9, 11));
+          const mm = Number(localStamp.slice(11, 13));
+          const utc = new Date(Date.UTC(y, mo, d, hh, mm) - (330 * 60 * 1000));
+          return utc.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}Z$/, 'Z');
+        };
+        const mapUrl = item.locationUrl || '';
+        const description = item.notes + (mapUrl ? '\nLocation: ' + mapUrl : '');
+        const location = item.venue + ', Deoria, Uttar Pradesh, India';
+        const params = new URLSearchParams({
+          action: 'TEMPLATE',
+          text: 'Piyush & Priti: ' + item.title,
+          dates: toGoogleCalendarStamp(item.start) + '/' + toGoogleCalendarStamp(item.end),
+          details: description,
+          location,
+          ctz: 'Asia/Kolkata'
+        });
+        window.open('https://calendar.google.com/calendar/render?' + params.toString(), '_blank', 'noopener,noreferrer');
+      });
+
+      // 8. SHARE HELPERS
+      document.getElementById('share-card-btn')?.addEventListener('click', () => {
+        if (navigator.share) {
+          navigator.share({
+            title: "Piyush & Priti Wedding Invitation",
+            text: "You are warmly invited to celebrate the wedding of Piyush & Priti on 25 November 2026 at Deoria, Uttar Pradesh.",
+            url: window.location.href
+          });
+        } else {
+          navigator.clipboard?.writeText(window.location.href);
+          showToast("✨ Invitation URL copied to clipboard!");
+        }
+      });
+
+      document.getElementById('venue-share-btn')?.addEventListener('click', () => {
+        const venueInfo = "Piyush & Priti wedding venue — Annapurna Marriage Hall, Parshuram Chowk, Deoria, Uttar Pradesh 274001";
+        if (navigator.share) {
+          navigator.share({ title: "Wedding Venue Location", text: venueInfo, url: "https://maps.app.goo.gl/neYJPdxVLzDrL6Vz6" });
+        } else {
+          navigator.clipboard?.writeText(venueInfo + " — Map: https://maps.app.goo.gl/neYJPdxVLzDrL6Vz6");
+          showToast("✨ Venue address and map link copied!");
+        }
+      });
+
+      // Initialize
+      updateActiveVisuals();
+    })();
