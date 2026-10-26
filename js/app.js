@@ -427,12 +427,9 @@
         "Mehendi & Sangeet": "मेहंदी एवं संगीत",
         "Haldi": "हल्दी",
         "Shubh Vivah": "शुभ विवाह",
-        "Dress: Traditional Kurta & Silk": "पोशाक: पारंपरिक कुर्ता एवं रेशमी वस्त्र",
-        "Dress: Green & Floral Lehengas": "पोशाक: हरे रंग एवं फूलों की कढ़ाई वाले लहंगे",
-        "Dress: Saffron & Yellow": "पोशाक: केसरिया एवं पीले रंग के वस्त्र",
-        "Dress: Imperial Regal Silks": "पोशाक: सुंदर रेशमी परिधान",
         "Details": "विवरण",
         "View Details": "विवरण देखें",
+        "View Location": "स्थान देखें",
         "Family Blessings": "परिवार का आशीर्वाद",
         "With the divine blessings of our ancestors and elders": "हमारे पूर्वजों एवं बड़ों के दिव्य आशीर्वाद सहित",
         "Groom's Side": "वर पक्ष",
@@ -440,7 +437,9 @@
         "Grandparents & Parents cordially invite you to join the celebration of love.": "दादा-दादी एवं माता-पिता आपको प्रेम और मंगल के इस उत्सव में सादर आमंत्रित करते हैं।",
         "Warmly welcome all dear relatives and friends to bless the new chapter.": "नए जीवन-अध्याय को आशीर्वाद देने हेतु सभी प्रिय रिश्तेदारों एवं मित्रों का हार्दिक स्वागत है।",
         "Destination & Venue": "विवाह स्थल एवं पहुँचने का विवरण",
-        "Annapurna Marriage Lawn, CC Road, Deoria, Uttar Pradesh": "अन्नपूर्णा मैरिज लॉन, सीसी रोड, देवरिया, उत्तर प्रदेश",
+        "Annapurna Marriage Hall, Parshuram Chowk, Deoria, Uttar Pradesh": "अन्नपूर्णा मैरेज हॉल,परशुराम चौक,देवरिया, उत्तर प्रदेश",
+        "Annapurna Marriage Hall, Parshuram Chowk, Deoria, Uttar Pradesh · View on Map": "अन्नपूर्णा मैरेज हॉल,परशुराम चौक,देवरिया, उत्तर प्रदेश · मानचित्र देखें",
+        "CC Road, Near Hanuman Mandir, Deoria, Uttar Pradesh 274001 · View on Map": "सीसी रोड, हनुमान मंदिर के पास, देवरिया, उत्तर प्रदेश 274001 · मानचित्र देखें",
         "CC Road, Near Hanuman Mandir, Deoria, Uttar Pradesh 274001": "सीसी रोड, हनुमान मंदिर के पास, देवरिया, उत्तर प्रदेश 274001",
         "Railway": "रेलवे स्टेशन", "Airport": "हवाई अड्डा",
         "Directions": "रास्ता देखें", "Share Venue": "विवाह स्थल साझा करें",
@@ -475,7 +474,7 @@
         "Grand Baraat welcome, Varmala under the starry canopy, sacred Vedic Vivah Sanskar around Agni, and Vidai.": "भव्य बारात स्वागत, तारों की छाँव में वरमाला, अग्नि के समक्ष वैदिक विवाह संस्कार और विदाई।",
         "Ceremony Details": "समारोह का विवरण",
         "Ceremony Chronicle": "समारोह की जानकारी",
-        "Add to Google Calendar": "Google कैलेंडर में जोड़ें",
+        "Save Event to Calendar": "कैलेंडर में इवेंट सेव करें",
         "Dismiss": "बंद करें",
         "Apply Theme & Style to Invitation": "निमंत्रण पर थीम और शैली लागू करें",
         "Reset to Black & Gold Default": "काले और सुनहरे रंगों पर लौटें",
@@ -508,7 +507,6 @@
         "RSVP & Celebration WhatsApp Portal": "व्हाट्सऐप पर अपनी उपस्थिति बताएँ",
         "More Soon": "जल्द आ रहा है",
         "Venue": "विवाह स्थल",
-        "Dress Code": "पोशाक",
         "Sagai & Engagement": "सगाई एवं अंगूठी समारोह",
         "Header": "शीर्षक",
         "Actions": "विकल्प",
@@ -639,7 +637,6 @@
           title: "Sagai & Engagement",
           datetime: "Monday, 23 Nov 2026 • 6:00 PM onwards",
           venue: "Darbar Hall, Deoria Palace Grounds",
-          dress: "Elegant Pastels & Jodhpuri Coats",
           notes: "Sacred exchange of rings blessed by elders, followed by traditional Bhojpuri welcome songs and family dinner.",
           icon: "favorite",
           start: "20261123T180000", end: "20261123T220000"
@@ -648,16 +645,15 @@
           title: "Tilak",
           datetime: "Tuesday, 24 Nov 2026 • 11:00 AM",
           venue: "Ajaypura Marwat, Pakadi, Deoria",
-          dress: "Traditional Silk Kurta & Dhoti / Nehru Jackets",
           notes: "Auspicious Tilak ceremony invoking Lord Ganesha's blessings with sandalwood paste, sweets, and gift presentations.",
           icon: "verified",
+          locationUrl: "https://maps.app.goo.gl/Gzwegp7iD2AQd2zZ8",
           start: "20261124T110000", end: "20261124T140000"
         },
         mehendi: {
           title: "Mehendi & Sangeet",
           datetime: "Tuesday, 24 Nov 2026 • 5:30 PM",
-          venue: "Indira Nagar CC Road, Deoria",
-          dress: "Floral Lehengas & Festive Kurtas (Green / Floral shades)",
+          venue: "at Home, Indira Nagar, CC Road, Deoria",
           notes: "Intricate Rajasthani & Arabic henna artistry, live Dholak beats, traditional wedding geet, and folk dance.",
           icon: "palette",
           start: "20261124T153000", end: "20261124T183000"
@@ -666,7 +662,6 @@
           title: "Sangeet & Musical Night",
           datetime: "Tuesday, 24 Nov 2026 • 7:30 PM onwards",
           venue: "Ballroom & Grand Lawns",
-          dress: "Festive Bandhgala Attire",
           notes: "Celebratory choreography by families, live Shehnai-Sufi band lineup, followed by grand feast.",
           icon: "nightlife",
           start: "20261124T193000", end: "20261124T235900"
@@ -674,8 +669,7 @@
         haldi: {
           title: "Haldi",
           datetime: "Wednesday, 25 Nov 2026 • 10:30 AM",
-          venue: "Indira Nagar CC Road, Deoria",
-          dress: "Shades of Saffron & Mustard Yellow",
+          venue: "Indira Nagar, CC Road, Deoria",
           notes: "Sacred turmeric and sandalwood paste application with marigold showers, traditional songs, and morning brunch.",
           icon: "flare",
           start: "20261125T093000", end: "20261125T123000"
@@ -683,10 +677,10 @@
         vivah: {
           title: "Shubh Vivah",
           datetime: "Wednesday, 25 Nov 2026 • 7:00 PM (Pheras: Midnight)",
-          venue: "Annapurna Marriage Lawn, CC Road, Deoria",
-          dress: "Traditional Indian Attire & Heirloom Silks",
+          venue: "Annapurna Marriage Hall, Parshuram Chowk, Deoria",
           notes: "Grand Baraat welcome, Varmala under the starry canopy, sacred Vedic Vivah Sanskar around Agni, and Vidai.",
           icon: "temple_hindu",
+          locationUrl: "https://maps.app.goo.gl/neYJPdxVLzDrL6Vz6",
           start: "20261125T190000", end: "20261126T020000"
         }
       };
@@ -702,9 +696,18 @@
         document.getElementById('modal-title').innerText = item.title;
         document.getElementById('modal-datetime').innerText = item.datetime;
         document.getElementById('modal-venue').innerText = item.venue;
-        document.getElementById('modal-dress').innerText = item.dress;
         document.getElementById('modal-notes').innerText = item.notes;
         document.getElementById('modal-icon').innerText = item.icon;
+        const locationBtn = document.getElementById('modal-location-btn');
+        if (item.locationUrl) {
+          locationBtn.href = item.locationUrl;
+          locationBtn.classList.remove('hidden');
+          locationBtn.classList.add('flex');
+        } else {
+          locationBtn.href = '#';
+          locationBtn.classList.add('hidden');
+          locationBtn.classList.remove('flex');
+        }
         if (currentLang === 'hi') translatePage('hi');
 
         modal.classList.remove('opacity-0', 'pointer-events-none');
@@ -732,8 +735,30 @@
       document.getElementById('modal-calendar-btn')?.addEventListener('click', () => {
         const item = ceremonies[currentCeremonyKey];
         if (!item) return;
-        const gcalUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent('Piyush & Priti: ' + item.title)}&dates=${item.start}/${item.end}&details=${encodeURIComponent(item.notes)}&location=${encodeURIComponent(item.venue + ', Deoria, UP')}`;
-        window.open(gcalUrl, '_blank');
+
+        // Keep the original behaviour: open Google Calendar's event template page.
+        // Ceremony times are stored in India Standard Time (UTC+05:30).
+        const toGoogleCalendarStamp = (localStamp) => {
+          const y = Number(localStamp.slice(0, 4));
+          const mo = Number(localStamp.slice(4, 6)) - 1;
+          const d = Number(localStamp.slice(6, 8));
+          const hh = Number(localStamp.slice(9, 11));
+          const mm = Number(localStamp.slice(11, 13));
+          const utc = new Date(Date.UTC(y, mo, d, hh, mm) - (330 * 60 * 1000));
+          return utc.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}Z$/, 'Z');
+        };
+        const mapUrl = item.locationUrl || '';
+        const description = item.notes + (mapUrl ? '\nLocation: ' + mapUrl : '');
+        const location = item.venue + ', Deoria, Uttar Pradesh, India';
+        const params = new URLSearchParams({
+          action: 'TEMPLATE',
+          text: 'Piyush & Priti: ' + item.title,
+          dates: toGoogleCalendarStamp(item.start) + '/' + toGoogleCalendarStamp(item.end),
+          details: description,
+          location,
+          ctz: 'Asia/Kolkata'
+        });
+        window.open('https://calendar.google.com/calendar/render?' + params.toString(), '_blank', 'noopener,noreferrer');
       });
 
       // 8. SHARE HELPERS
@@ -751,12 +776,12 @@
       });
 
       document.getElementById('venue-share-btn')?.addEventListener('click', () => {
-        const venueInfo = "Rajputana Heritage Mandir & Deoria Palace Grounds, Civil Lines Estate, Deoria, Uttar Pradesh 274001";
+        const venueInfo = "Piyush & Priti wedding venue — Annapurna Marriage Hall, Parshuram Chowk, Deoria, Uttar Pradesh 274001";
         if (navigator.share) {
-          navigator.share({ title: "Wedding Venue Location", text: venueInfo, url: "https://maps.google.com/?q=Deoria+Uttar+Pradesh" });
+          navigator.share({ title: "Wedding Venue Location", text: venueInfo, url: "https://maps.app.goo.gl/neYJPdxVLzDrL6Vz6" });
         } else {
-          navigator.clipboard?.writeText(venueInfo);
-          showToast("✨ Venue address copied!");
+          navigator.clipboard?.writeText(venueInfo + " — Map: https://maps.app.goo.gl/neYJPdxVLzDrL6Vz6");
+          showToast("✨ Venue address and map link copied!");
         }
       });
 
